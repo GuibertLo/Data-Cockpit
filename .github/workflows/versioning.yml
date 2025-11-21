@@ -5,7 +5,7 @@ on:
     types:
       - closed
     branches:
-      - develop
+      - main
 
 permissions:
   contents: write
@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   update-versions:
-    if: github.event.pull_request.merged == true && !startsWith(github.event.pull_request.head.ref, 'version-update/')
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
@@ -26,105 +26,103 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
 
-    - name: Install Python dependencies
+    - name: Getting parent version
       run: |
-        python -m pip install --upgrade pip
-        pip install lxml packaging
+        VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+        # Save the modules to GitHub environment
+        echo "VERSION=${OLD_VERSION}" >> $GITHUB_ENV
 
-    - name: Extract Module Updates from PR Description
-      id: extract_updates
+    - name: Determine overall change level
       run: |
-        #!/bin/bash
-
-        # Extract the pull request body
-        PR_BODY=$(jq -r .pull_request.body < "$GITHUB_EVENT_PATH")
-
-        # Initialize variables
-        PATCH_MODULES=()
-        MINOR_MODULES=()
-        MAJOR_MODULES=()
-
-        # Check for module updates
+        # Initialize highest level priority
+        # patch=0, minor=1, major=2
+        highest=-1
+        
+        # Extract Unreleased section
+        unreleased=$(awk '/^## Unreleased/{flag=1; next} /^## /{flag=0} flag' "$CHANGELOG")
+        
+        # Check each line for semantic version tags
         while read -r line; do
-          case $line in
-            *"tree"* )
-              MODULE_NAME="tree"
-              ;;
-            *"database"* )
-              MODULE_NAME="database"
-              ;;
-            *"visualizer"* )
-              MODULE_NAME="visualizer"
-              ;;
-            *"general_libraries"* )
-              MODULE_NAME="general_libraries"
-              ;;
-            *"experiments"* )
-              MODULE_NAME="experiments"
-              ;;
-            *"- [x] Patch update(s)"* )
-              PATCH_MODULES+=($MODULE_NAME)
-              ;;
-            *"- [x] Minor update(s)"* )
-              MINOR_MODULES+=($MODULE_NAME)
-              ;;
-            *"- [x] Major update(s)"* )
-              MAJOR_MODULES+=($MODULE_NAME)
-              ;;
-          esac
-        done <<< "$PR_BODY"
+            case "$line" in
+                major:*) level=2 ;;
+                minor:*) level=1 ;;
+                patch:*) level=0 ;;
+                *) continue ;;
+            esac
+        
+            if (( level > highest )); then
+                highest=$level
+            fi
+        done <<< "$unreleased"
+        
+        # Map level back to name
+        if (( highest == 2 )); then
+            CHANGE_TYPE="major"
+        elif (( highest == 1 )); then
+            CHANGE_TYPE="minor"
+        elif (( highest == 0 )); then
+            CHANGE_TYPE="patch"
+        else
+            CHANGE_TYPE=""
+        fi
 
         # Save the modules to GitHub environment
-        echo "PATCH_MODULES=${PATCH_MODULES[@]}" >> $GITHUB_ENV
-        echo "MINOR_MODULES=${MINOR_MODULES[@]}" >> $GITHUB_ENV
-        echo "MAJOR_MODULES=${MAJOR_MODULES[@]}" >> $GITHUB_ENV
+        echo "CHANGE_TYPE=${CHANGE_TYPE}" >> $GITHUB_ENV
 
-    - name: Print Extracted Modules
+    - name: Determine new version number
       run: |
-        echo "Patch Modules: ${{ env.PATCH_MODULES }}"
-        echo "Minor Modules: ${{ env.MINOR_MODULES }}"
-        echo "Major Modules: ${{ env.MAJOR_MODULES }}"
+        CHANGE_TYPE="${{ env.CHANGE_TYPE }}"
+        OLD_VERSION="${{ env.OLD_VERSION }}"
+        
+        # Validate inputs
+        if [[ -z "$OLD_VERSION" || -z "$CHANGE_TYPE" ]]; then
+            echo "Usage: $0 <old_version> <major|minor|patch>"
+            exit 1
+        fi
+        
+        if [[ ! "$OLD_VERSION" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            echo "Old version must be in format X.Y.Z"
+            exit 1
+        fi
+        
+        # Extract major, minor, patch
+        MAJOR="${BASH_REMATCH[1]}"
+        MINOR="${BASH_REMATCH[2]}"
+        PATCH="${BASH_REMATCH[3]}"
+        
+        # Bump version according to semantic versioning
+        case "$CHANGE_TYPE" in
+            major)
+                MAJOR=$((MAJOR + 1))
+                MINOR=0
+                PATCH=0
+                ;;
+            minor)
+                MINOR=$((MINOR + 1))
+                PATCH=0
+                ;;
+            patch)
+                PATCH=$((PATCH + 1))
+                ;;
+            *)
+                echo "Change type must be one of: major, minor, patch"
+                exit 1
+                ;;
+        esac
+        
+        NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+        
+        # Save the version number to GitHub environment
+        echo "NEW_VERSION=${NEW_VERSION}" >> $GITHUB_ENV
 
-    - name: Update Patch Modules
-      if: env.PATCH_MODULES != ''
+    - name: Update Modules Version
       run: |
-        for module in $PATCH_MODULES; do
-          mvn -f $module/pom.xml build-helper:parse-version versions:set -DnewVersion='${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.nextIncrementalVersion}'
-        done
-
-    - name: Update Minor Modules
-      if: env.MINOR_MODULES != ''
-      run: |
-        for module in $MINOR_MODULES; do
-          mvn -f $module/pom.xml build-helper:parse-version versions:set -DnewVersion='${parsedVersion.majorVersion}.${parsedVersion.nextMinorVersion}.0'
-        done
-
-    - name: Update Major Modules
-      if: env.MAJOR_MODULES != ''
-      run: |
-        for module in $MAJOR_MODULES; do
-          mvn -f $module/pom.xml build-helper:parse-version versions:set -DnewVersion='${parsedVersion.nextMajorVersion}.0.0'
-        done
+        NEW_VERSION="${{ env.NEW_VERSION }}"
+        mvn versions:set -DnewVersion={NEW_VERSION} -DprocessAllModules=true -DgenerateBackupPoms=false
 
     - name: Update Parent Properties
       run: |
         mvn versions:update-properties
-
-    - name: Determine Overall Update Level
-      id: update_level
-      run: |
-        if [ -n "$MAJOR_MODULES" ]; then
-          echo "update_level=major" >> $GITHUB_ENV
-        elif [ -n "$MINOR_MODULES" ]; then
-          echo "update_level=minor" >> $GITHUB_ENV
-        else
-          echo "update_level=patch" >> $GITHUB_ENV
-        fi
-
-    - name: Run Python Script to Update Parent Version
-      run: |
-        NEW_VERSION=$(python3 update_parent_version.py ${{ env.update_level }})
-        echo "NEW_VERSION=${NEW_VERSION}" >> $GITHUB_ENV
 
     - name: Update Child Modules
       run: |
@@ -137,30 +135,17 @@ jobs:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         exempt-labels: no qa
 
-    - name: Update Changelog
+    - name: Configure Git
       run: |
-        NEW_VERSION="${{ env.NEW_VERSION }}"
-        PR_DESCRIPTION=$(jq -r '.pull_request.body' "$GITHUB_EVENT_PATH" | awk '/^## Description/,/-->/{flag=1; next} /^## / && flag{flag=0} flag')
-        PR_CHANGELOG=$(jq -r '.pull_request.body' "$GITHUB_EVENT_PATH" | awk '/## Changelog Information/,/-->/ {found = 1; next} found')
-        DATE=$(date +'%Y.%m.%d')
-    
-        echo "NEW_VERSION=${NEW_VERSION}"
-        echo "PR_DESCRIPTION=${PR_DESCRIPTION}"
-        echo "PR_CHANGELOG=${PR_CHANGELOG}"
-        echo "DATE=${DATE}"
-        
-        # Create a new section in CHANGELOG.md if no previous unreleased section exists
-        sed -i '0,/^## /{/^## Unreleased/!s/^## /## Unreleased\n\n&/}' CHANGELOG.md
-    
-        # Insert entry into CHANGELOG.md under Unreleased section
-        echo -e "\n### ${NEW_VERSION}\n${PR_DESCRIPTION}\n${PR_CHANGELOG}" | sed -i '/## Unreleased/r /dev/stdin' CHANGELOG.md
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
 
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v7
-      with:
-        delete-branch: true
-        branch: "version-update/${{ env.NEW_VERSION }}"
-        title: "Automated version update: ${{ env.NEW_VERSION }}"
-        base: "develop"
-        body: 'Automated update on module versions and CHANGELOG.md, based on PR #${{ github.event.pull_request.number }}.'
-        commit-message: 'Update CHANGELOG and module versions based on PR #${{ github.event.pull_request.number }}'
+    - name: Commit & Push
+      run: |
+        if [[ -n "$(git status --porcelain)" ]]; then
+          git add .
+          git commit -m "github-actions[bot]: updating software versioning, automation of a post-merge into main"
+          git push origin HEAD:develop
+        else
+          echo "No changes to commit"
+        fi
