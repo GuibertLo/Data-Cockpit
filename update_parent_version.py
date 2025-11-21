@@ -4,6 +4,7 @@ import sys
 
 # Path to the parent POM file
 parent_pom_path = 'pom.xml'
+modules = ['database', 'experiments', 'general_libraries', 'tree', 'visualizer']
 
 # Function to extract the parent version
 def extract_version(root):
@@ -11,7 +12,7 @@ def extract_version(root):
     return version_tag.text if version_tag is not None else None
 
 # Function to update the parent POM version
-def update_parent_version(new_version, tree, root):
+def update_version(new_version, tree, root):
     version_tag = root.find(f".//{{http://maven.apache.org/POM/4.0.0}}version")
     if version_tag is not None:
         version_tag.text = new_version
@@ -40,13 +41,21 @@ def main(increment_level):
     current_parent_version = extract_version(root)
     if not current_parent_version:
         print("Parent version not found.")
-        return
+        sys.exit(1)
 
     # Determine new parent version based on the specified level
     new_parent_version = increment_version(current_parent_version, increment_level)
     # Update the parent POM version
-    update_parent_version(new_parent_version, tree, root)
-    # Print the new version in a structured way for GitHub Actions
+    update_version(new_parent_version, tree, root)
+
+    # Changing all modules' version
+    for module in modules:
+        module_tree = ET.parse(f"{module}/{parent_pom_path}")
+        module_root = module_tree.getroot()
+
+        # Update the POM version
+        update_version(new_parent_version, module_tree, module_root)
+
     print(new_parent_version)
 
 if __name__ == "__main__":
