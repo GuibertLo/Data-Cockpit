@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+### Title
+
+Text
+
+### Title
+
+Text
+
 ## 1.2.0 (2025.08.20)
 
 
