@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+### PR 6
+minor: Description here
+
+- database: minor update short description
+
 ### PR 5
 major: Description here
 
