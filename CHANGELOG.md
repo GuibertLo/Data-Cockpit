@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+### PR 29
+minor: 1
+
+
+- database: minor update short description
+
 ### PR 27
 patch: 1
 
