@@ -83,7 +83,6 @@ jobs:
     - name: Determine Overall Update Level
       id: update_level
       run: |
-        
         if [ -n "${{ env.MAJOR_MODULES }}" ]; then
           echo "UPDATE_LEVEL=major" >> $GITHUB_ENV
         elif [ -n "${{ env.MINOR_MODULES }}" ]; then
