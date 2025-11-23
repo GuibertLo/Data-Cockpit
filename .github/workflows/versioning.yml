@@ -31,6 +31,8 @@ jobs:
         VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
         # Save the modules to GitHub environment 
         echo "OLD_VERSION=${VERSION}" >> $GITHUB_ENV
+        # Display version
+        echo "PROJECT VERSION: ${VERSION}"
 
     - name: Determine overall change level
       run: |
@@ -39,10 +41,11 @@ jobs:
         highest=-1
         
         # Extract Unreleased section
-        unreleased= sed -n '/^## Unreleased/,/^## /p' CHANGELOG.md | sed '$d'
+        unreleased=$(sed -n '/^## Unreleased/,/^## /p' CHANGELOG.md | sed '$d')
         
         # Check each line for semantic version tags
         while read -r line; do
+          echo $line
             case "$line" in
                 major:*) level=2 ;;
                 minor:*) level=1 ;;
@@ -65,9 +68,11 @@ jobs:
         else
             CHANGE_TYPE=""
         fi
-
+        
         # Save the modules to GitHub environment
         echo "CHANGE_TYPE=${CHANGE_TYPE}" >> $GITHUB_ENV
+        # Display change type
+        echo "CHANGE TYPE: ${CHANGE_TYPE}"
 
     - name: Determine new version number
       run: |
@@ -108,6 +113,8 @@ jobs:
         
         # Save the version number to GitHub environment
         echo "NEW_VERSION=${NEW_VERSION}" >> $GITHUB_ENV
+        # Display new version number
+        echo "NEW VERSION: ${NEW_VERSION}"
 
     - name: Update Modules Version
       run: |
