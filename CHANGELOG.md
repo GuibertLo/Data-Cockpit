@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+### PR 11
+patch: awdawdawd
+
+- database: minor update short description
+
 ### PR 9
 minor: Changed namespace
 
