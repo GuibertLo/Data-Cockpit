@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+### PR 13
+patch: awdawd
+
+- general_libraries: patch description
+
 ## 1.2.0 (2025.08.20)
 
 

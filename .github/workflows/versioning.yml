@@ -30,7 +30,7 @@ jobs:
       run: |
         VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
         # Save the modules to GitHub environment 
-        echo "VERSION=${OLD_VERSION}" >> $GITHUB_ENV
+        echo "OLD_VERSION=${VERSION}" >> $GITHUB_ENV
 
     - name: Determine overall change level
       run: |
@@ -39,7 +39,7 @@ jobs:
         highest=-1
         
         # Extract Unreleased section
-        unreleased=$(awk '/^## Unreleased/{flag=1; next} /^## /{flag=0} flag' "$CHANGELOG")
+        unreleased= sed -n '/^## Unreleased/,/^## /p' CHANGELOG.md | sed '$d'
         
         # Check each line for semantic version tags
         while read -r line; do
@@ -73,12 +73,6 @@ jobs:
       run: |
         CHANGE_TYPE="${{ env.CHANGE_TYPE }}"
         OLD_VERSION="${{ env.OLD_VERSION }}"
-        
-        # Validate inputs
-        if [[ -z "$OLD_VERSION" || -z "$CHANGE_TYPE" ]]; then
-            echo "Usage: $0 <old_version> <major|minor|patch>"
-            exit 1
-        fi
         
         if [[ ! "$OLD_VERSION" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
             echo "Old version must be in format X.Y.Z"
