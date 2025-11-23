@@ -1,11 +1,11 @@
 name: Release new version
 
 on:
-  pull_request:
+  workflow_run:
+    workflows: ["Adapt versioning"]
+    branches: [main]
     types:
-      - closed
-    branches:
-      - main
+      - completed
 
 permissions:
   contents: write
@@ -25,6 +25,8 @@ jobs:
         VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
         # Save the modules to GitHub environment
         echo "VERSION=${VERSION}" >> $GITHUB_ENV
+        # Display the extracted value
+        echo "VERSION=${VERSION}"
 
     - name: Update Changelog
       id: update_changelog
@@ -33,7 +35,7 @@ jobs:
         # Extract version number from the changelog and keep it for later
                
         # Concatenate all unreleased versions into a release note
-        sed -i -e "/^## Unreleased$/s/.*/## $NEW_VERSION ($(date +%Y.%m.%d))/" -e "/^## $NEW_VERSION/,/^## /{/^### /d}" CHANGELOG.md
+        sed -i -e "/^## Unreleased$/s/.*/## $VERSION ($(date +%Y.%m.%d))/" -e "/^## $VERSION/,/^## /{/^### /d}" CHANGELOG.md
                  
         # Extract the newest version's release note
         RELEASE_NOTE=$(cat CHANGELOG.md | sed -n '/^## /{n; :a; /^## /q; p; n; ba}')
@@ -66,8 +68,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ env.NEW_VERSION }} # Assuming NEW_VERSION is set earlier
-        release_name: Release ${{ env.NEW_VERSION }}
+        tag_name: ${{ env.VERSION }} # Assuming VERSION is set earlier
+        release_name: Release ${{ env.VERSION }}
         body: |
            ${{ env.RELEASE_NOTE }}
         draft: false

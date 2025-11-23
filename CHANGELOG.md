@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ##  (2025.11.23)
 
+### PR 11
+patch: awdawdawd
+
+- database: minor update short description
+
+### PR 9
 minor: Changed namespace
 
 - database: minor update short description
