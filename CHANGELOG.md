@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+### PR 17
+patch: awd
+
+
+- database: minor update short description
+
 ### PR 15
 patch: OUI !ü!!!!!!
 
