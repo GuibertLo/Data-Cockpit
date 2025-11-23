@@ -83,14 +83,14 @@ jobs:
     - name: Determine Overall Update Level
       id: update_level
       run: |
-        if [ -n "MAJOR_MODULES" ]; then
+        
+        if [ -n "${{ env.MAJOR_MODULES }}" ]; then
           echo "UPDATE_LEVEL=major" >> $GITHUB_ENV
-        elif [ -n "$MINOR_MODULES" ]; then
+        elif [ -n "${{ env.MINOR_MODULES }}" ]; then
           echo "UPDATE_LEVEL=minor" >> $GITHUB_ENV
         else
           echo "UPDATE_LEVEL=patch" >> $GITHUB_ENV
         fi
-        echo "Patch Modules: ${{ env.UPDATE_LEVEL }}"
 
     - name: Check PR Description
       id: description-checker
