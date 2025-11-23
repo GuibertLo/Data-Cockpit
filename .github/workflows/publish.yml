@@ -52,7 +52,6 @@ jobs:
         GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
     - name: Build and Deploy Modules
-      if: env.IS_PATCH == 'false'
       run: |
         # Module names
         MODULE_NAMES=("tree" "database" "visualizer" "general_libraries" "experiments")

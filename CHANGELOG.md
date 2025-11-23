@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+### [PR 33](https://github.com/heiafr-isc/Data-Cockpit/pull/33)
+patch: 1
+
+
+- general_libraries: patch description
+
 ### PR 31
 patch: Coucou
 
