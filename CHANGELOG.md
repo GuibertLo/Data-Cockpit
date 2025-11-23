@@ -2,14 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+##  (2025.11.23)
 
-### PR 9
 minor: Changed namespace
 
 - database: minor update short description
 
-### PR 8
 patch: Description here
 
 - tree: patch update short description hihi
