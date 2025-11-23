@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+### PR 9
+minor: Changed namespace
+
+- database: minor update short description
+
 ### PR 8
 patch: Description here
 
