@@ -3,7 +3,6 @@ name: Release new version
 on:
   workflow_run:
     workflows: ["Adapt versioning"]
-    branches: [main]
     types:
       - completed
 

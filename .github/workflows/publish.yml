@@ -3,7 +3,6 @@ name: Publish
 on:
   workflow_run:
     workflows: ["Release new version"]
-    branches: [main]
     types:
       - completed
 

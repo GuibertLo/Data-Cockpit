@@ -147,6 +147,7 @@ jobs:
 
     - name: Keep develop up-to-date
       run: |
+        git pull
         git switch develop
         git merge main
       env:
