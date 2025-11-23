@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+### PR 21
+patch: q
+
+
+- database: minor update short description
+
 ### PR 19
 patch: awd
 
