@@ -45,28 +45,27 @@ jobs:
         
         # Check each line for semantic version tags
         while read -r line; do
-          echo $line
-            case "$line" in
-                major:*) level=2 ;;
-                minor:*) level=1 ;;
-                patch:*) level=0 ;;
-                *) continue ;;
-            esac
-        
-            if (( level > highest )); then
-                highest=$level
-            fi
+          case "$line" in
+              major:*) level=2 ;;
+              minor:*) level=1 ;;
+              patch:*) level=0 ;;
+              *) continue ;;
+          esac
+      
+          if (( level > highest )); then
+              highest=$level
+          fi
         done <<< "$unreleased"
         
         # Map level back to name
         if (( highest == 2 )); then
-            CHANGE_TYPE="major"
+          CHANGE_TYPE="major"
         elif (( highest == 1 )); then
-            CHANGE_TYPE="minor"
+          CHANGE_TYPE="minor"
         elif (( highest == 0 )); then
-            CHANGE_TYPE="patch"
+          CHANGE_TYPE="patch"
         else
-            CHANGE_TYPE=""
+          CHANGE_TYPE=""
         fi
         
         # Save the modules to GitHub environment
@@ -80,8 +79,8 @@ jobs:
         OLD_VERSION="${{ env.OLD_VERSION }}"
         
         if [[ ! "$OLD_VERSION" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
-            echo "Old version must be in format X.Y.Z"
-            exit 1
+          echo "Old version must be in format X.Y.Z"
+          exit 1
         fi
         
         # Extract major, minor, patch
@@ -91,22 +90,22 @@ jobs:
         
         # Bump version according to semantic versioning
         case "$CHANGE_TYPE" in
-            major)
-                MAJOR=$((MAJOR + 1))
-                MINOR=0
-                PATCH=0
-                ;;
-            minor)
-                MINOR=$((MINOR + 1))
-                PATCH=0
-                ;;
-            patch)
-                PATCH=$((PATCH + 1))
-                ;;
-            *)
-                echo "Change type must be one of: major, minor, patch"
-                exit 1
-                ;;
+          major)
+            MAJOR=$((MAJOR + 1))
+            MINOR=0
+            PATCH=0
+            ;;
+          minor)
+            MINOR=$((MINOR + 1))
+            PATCH=0
+            ;;
+          patch)
+            PATCH=$((PATCH + 1))
+            ;;
+          *)
+            echo "Change type must be one of: major, minor, patch"
+            exit 1
+            ;;
         esac
         
         NEW_VERSION="$MAJOR.$MINOR.$PATCH"
@@ -128,13 +127,6 @@ jobs:
     - name: Update Child Modules
       run: |
         mvn -N versions:update-child-modules
-
-    - name: Check PR Description
-      id: description-checker
-      uses: jadrol/pr-description-checker-action@v1.0.0
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        exempt-labels: no qa
 
     - name: Configure Git
       run: |
