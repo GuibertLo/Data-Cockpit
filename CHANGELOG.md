@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+### PR 7
+major: 
+
+- tree: patch update short description
+- database: minor update short description
+- general_libraries: patch description
+
 ### PR 6
 minor: Description here
 
