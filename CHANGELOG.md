@@ -2,22 +2,6 @@
 
 All notable changes to this project will be documented in this file.
 
-##  (2025.11.23)
-
-### PR 11
-patch: awdawdawd
-
-- database: minor update short description
-
-### PR 9
-minor: Changed namespace
-
-- database: minor update short description
-
-patch: Description here
-
-- tree: patch update short description hihi
-
 ## 1.2.0 (2025.08.20)
 
 
@@ -39,3 +23,4 @@ Deletion of unused interface known as SaveAndLoadAble
 Start of Data-Cockpit multi-module project : 
 
 The program has been refactored and prepared for this public repository. 
+
