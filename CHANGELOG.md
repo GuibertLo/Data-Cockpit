@@ -2,55 +2,6 @@
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased
-
-### PR 7
-major: 
-
-- tree: patch update short description
-- database: minor update short description
-- general_libraries: patch description
-
-### PR 6
-minor: Description here
-
-- database: minor update short description
-
-### PR 5
-major: Description here
-
-- general_libraries: patch description
-
-### PR 4
-: oui oui
-
-- tree: oui
-
-### PR 3
-: {PR_DESCRIPTION}
-- tree: adawdawdawd
-
-### PR 2
-: {PR_DESCRIPTION}
-- tree: patch update short description
-
-### 1.3.1
- 
-There was some remains of Javanco for loading icons in the visualiser. Icon loading is now made through the classLoader.
- 
- 
-- visualiser : Loading simplified
- 
-
-### 1.3.0
-Explicit versions in module dependencies have been added to avoid denied updates by Maven.
-
-
-- tree: added explicit module version
-- database: added explicit module version
-- visualizer: added explicit module version
-- experiments: added explicit module version
-
 ## 1.2.0 (2025.08.20)
 
 
