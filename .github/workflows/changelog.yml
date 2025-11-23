@@ -84,12 +84,13 @@ jobs:
       id: update_level
       run: |
         if [ -n "MAJOR_MODULES" ]; then
-          echo "update_level=major" >> $GITHUB_ENV
+          echo "UPDATE_LEVEL=major" >> $GITHUB_ENV
         elif [ -n "$MINOR_MODULES" ]; then
-          echo "update_level=minor" >> $GITHUB_ENV
+          echo "UPDATE_LEVEL=minor" >> $GITHUB_ENV
         else
-          echo "update_level=patch" >> $GITHUB_ENV
+          echo "UPDATE_LEVEL=patch" >> $GITHUB_ENV
         fi
+        echo "Patch Modules: ${{ env.UPDATE_LEVEL }}"
 
     - name: Check PR Description
       id: description-checker
