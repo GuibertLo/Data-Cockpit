@@ -1,11 +1,11 @@
 name: Publish
 
 on:
-  pull_request:
+  workflow_run:
+    workflows: ["Release new version"]
+    branches: [main]
     types:
-      - closed
-    branches:
-      - main
+      - completed
 
 jobs:
   deploy:
