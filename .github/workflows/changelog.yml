@@ -108,7 +108,7 @@ jobs:
         sed -i '0,/^## /{/^## Unreleased/!s/^## /## Unreleased\n\n&/}' CHANGELOG.md
     
         # Insert entry into CHANGELOG.md under Unreleased section
-        echo -e "\n### PR ${PR_ID}\n${UPDATE_LEVEL}: ${PR_DESCRIPTION}\n${PR_CHANGELOG}" | sed -i '/## Unreleased/r /dev/stdin' CHANGELOG.md
+        echo -e "\n### [PR ${PR_ID}](https://github.com/heiafr-isc/Data-Cockpit/pull/${PR_ID})\n${UPDATE_LEVEL}: ${PR_DESCRIPTION}\n${PR_CHANGELOG}" | sed -i '/## Unreleased/r /dev/stdin' CHANGELOG.md
 
     - name: Configure Git
       run: |

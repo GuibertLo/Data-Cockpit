@@ -30,10 +30,10 @@ jobs:
       id: update_changelog
       run: |
         VERSION="${{ env.VERSION }}"
-        # Extract version number from the changelog and keep it for later
+        TODAY=$(date +"%Y.%m.%d")
                
         # Concatenate all unreleased versions into a release note
-        sed -i -e "/^## Unreleased$/s/.*/## $VERSION ($(date +%Y.%m.%d))/" -e "/^## $VERSION/,/^## /{/^### /d}" CHANGELOG.md
+        sed -i "0,/^## Unreleased/{s/^## Unreleased/## $VERSION ($TODAY)/}" CHANGELOG.md
                  
         # Extract the newest version's release note
         RELEASE_NOTE=$(cat CHANGELOG.md | sed -n '/^## /{n; :a; /^## /q; p; n; ba}')
