@@ -150,5 +150,6 @@ jobs:
         git pull
         git switch develop
         git merge main
+        git push origin HEAD:develop
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
