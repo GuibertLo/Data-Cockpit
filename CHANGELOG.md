@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+### [PR 55](https://github.com/heiafr-isc/Data-Cockpit/pull/55)
+major: 1
+
+- general_libraries: patch description
+
 ### [PR 54](https://github.com/heiafr-isc/Data-Cockpit/pull/54)
 minor: 1
 
