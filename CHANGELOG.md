@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## 4.0.0 (2025.11.24)
+
+### [PR 69](https://github.com/heiafr-isc/Data-Cockpit/pull/69)
+major: Release error
+
+- database: minor update short description
+
 ## 3.2.0 (2025.11.24)
 
 ### [PR 67](https://github.com/heiafr-isc/Data-Cockpit/pull/67)
