@@ -62,7 +62,3 @@ As this project is meant to be and remained open-source among all hypothetical d
 Make sure to always add the licence header to any code file you may produce. In case of modification of a project file, please add your personal information in the header's contributor section of the file and the date of your modifications. 
 
 The [full licence](/LICENSE) is available in the project root directory. This licence must be equivalently applied to all possible forks or distributions of that project. Whether the software is entirely or partially reused. Make sure to take good note of the LICENSE document content.
-
-## Changelog
-
-...
