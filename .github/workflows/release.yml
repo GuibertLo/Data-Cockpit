@@ -51,25 +51,26 @@ jobs:
       run: |
         git config --local user.name "github-actions[bot]"
         git config --local user.email "13170944+GuibertLo@users.noreply.github.com"
+        git switch develop
 
     - name: Commit & Push
       run: |
         if [[ -n "$(git status --porcelain)" ]]; then
           git add .
-          git commit -m "github-actions[bot]: making a new release, automation of a post-merge into main"
-          git push origin HEAD:main
+          git commit -m "github-actions[bot]: changelog changes because of new release, automation of a post-merge into main"
+          git push origin HEAD:develop
         else
           echo "No changes to commit"
         fi
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Keep develop up-to-date
+    - name: Merge into main branch
       run: |
         git fetch origin
-        git checkout develop
-        git merge origin/main --no-ff -m "Keeping develop up-to-date with changelog"
-        git push origin develop
+        git checkout main
+        git merge origin/develop --no-ff -m "Merged develop into main"
+        git push origin main
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
