@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>database</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
     <packaging>jar</packaging>
 
     <parent>
         <groupId>io.github.guibertlo.data-cockpit</groupId>
         <artifactId>data-cockpit-main</artifactId>
-        <version>3.0.0</version>
+        <version>3.0.1</version>
     </parent>
 
     <name>Data-Cockpit Database</name>
