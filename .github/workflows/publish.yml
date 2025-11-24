@@ -48,18 +48,9 @@ jobs:
         MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
         MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
 
-    - name: Deploy Parent POM
-      run: mvn -B clean deploy -N -DskipTests -s config.xml -Dgpg.executable=gpg -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }}" -Dgpg.use-agent=false -Dgpg.loopback=true
-      env:
-        GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-
-    - name: Build and Deploy Modules
-      run: |
-        MODULES=("tree" "database" "visualizer" "general_libraries" "experiments")
-        echo "Modules to build: $MODULES"
-        for MODULE in "${MODULES[@]}"; do
-          echo "Building and deploying module: $MODULE"
-          mvn -B clean deploy -pl $MODULE -DskipTests -s config.xml -Dgpg.executable=gpg -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }}" -Dgpg.use-agent=false -Dgpg.loopback=true
-        done
+    - name: Deploy Parent POM And Modules
+      run:
+        export MAVEN_GPG_PASSPHRASE=${{ secrets.GPG_PASSPHRASE }}
+        mvn deploy -s config.xml -U
       env:
         GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
