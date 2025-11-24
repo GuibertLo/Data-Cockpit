@@ -18,6 +18,9 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Getting parent version
       run: |
@@ -58,6 +61,15 @@ jobs:
         else
           echo "No changes to commit"
         fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Keep develop up-to-date
+      run: |
+        git fetch origin
+        git checkout develop
+        git merge origin/main --no-ff -m "Keeping develop up-to-date with changelog"
+        git push origin develop
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
