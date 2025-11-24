@@ -4,7 +4,7 @@
 
     <groupId>io.github.guibertlo.data-cockpit</groupId>
     <artifactId>data-cockpit-main</artifactId>
-    <version>3.0.2</version>
+    <version>3.0.3</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -28,11 +28,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <general-libraries.version>3.0.2</general-libraries.version>
-        <database.version>3.0.2</database.version>
-        <tree.version>3.0.2</tree.version>
-        <visualizer.version>3.0.2</visualizer.version>
-        <experiments.version>3.0.2</experiments.version>
+        <general-libraries.version>3.0.3</general-libraries.version>
+        <database.version>3.0.3</database.version>
+        <tree.version>3.0.3</tree.version>
+        <visualizer.version>3.0.3</visualizer.version>
+        <experiments.version>3.0.3</experiments.version>
     </properties>
 
     <licenses>
