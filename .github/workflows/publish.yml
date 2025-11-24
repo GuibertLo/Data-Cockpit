@@ -49,8 +49,8 @@ jobs:
         MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
 
     - name: Deploy Parent POM And Modules
-      run: |
-        export MAVEN_GPG_PASSPHRASE=${{ secrets.GPG_PASSPHRASE }}
+      run:
+        export MAVEN_GPG_PASSPHRASE="${{ secrets.GPG_PASSPHRASE }}"
         mvn deploy -s config.xml -U
       env:
         GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
