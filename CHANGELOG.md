@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+### [PR 67](https://github.com/heiafr-isc/Data-Cockpit/pull/67)
+minor: awd
+
+- general_libraries: patch description
+
 ## 3.1.1 (2025.11.24)
 
 ### [PR 65](https://github.com/heiafr-isc/Data-Cockpit/pull/65)
