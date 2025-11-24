@@ -216,7 +216,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          target_commitish: 'main'
+          target_commitish: ${{ github.event.pull_request.head.ref }}
           body: |
             ${{ env.RELEASE_NOTE }}
           tag_name: ${{ env.VERSION }}
