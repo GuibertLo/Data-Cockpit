@@ -118,9 +118,19 @@ jobs:
         # Display new version number
         echo "NEW VERSION: ${NEW_VERSION}"
 
-    - name: Update Modules Version
+    - name: Update Parent POM Version
       run: |
         mvn versions:set -DnewVersion=${{ env.NEW_VERSION }} -DprocessAllModules=true -DgenerateBackupPoms=false
+
+    - name: Update modules Version
+      run: |
+        MODULES=("tree" "database" "visualizer" "general_libraries" "experiments")
+        echo "Modules to build: $MODULES"
+        IFS=',' read -r -a MODULE_ARRAY <<< "$MODULES"
+        for MODULE in "${MODULE_ARRAY[@]}"; do
+          echo "Updating module: $MODULE"
+          mvn -f $MODULE/pom.xml build-helper:parse-version versions:set -DnewVersion=${{ env.NEW_VERSION }} -DprocessAllModules=true -DgenerateBackupPoms=false
+        done
 
     - name: Update Parent Properties
       run: |
