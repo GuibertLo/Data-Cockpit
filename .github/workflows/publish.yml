@@ -44,12 +44,13 @@ jobs:
                 </servers>
             </settings>
         " > config.xml
+      env:
+        MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+        MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
 
     - name: Deploy Parent POM
       run: mvn -B clean deploy -N -DskipTests -s config.xml -Dgpg.executable=gpg -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }}" -Dgpg.use-agent=false -Dgpg.loopback=true
       env:
-        MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
-        MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
         GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
     - name: Build and Deploy Modules
@@ -61,6 +62,4 @@ jobs:
           mvn -B clean deploy -pl $MODULE -DskipTests -s config.xml -Dgpg.executable=gpg -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }}" -Dgpg.use-agent=false -Dgpg.loopback=true
         done
       env:
-        MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
-        MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
         GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
