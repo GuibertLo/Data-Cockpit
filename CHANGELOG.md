@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## 3.0.3 (2025.11.24)
 
 ### [PR 61](https://github.com/heiafr-isc/Data-Cockpit/pull/61)
 patch: This PR resolves an issue in the readme file.
