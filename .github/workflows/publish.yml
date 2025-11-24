@@ -2,7 +2,7 @@ name: Publish
 
 on:
   workflow_run:
-    workflows: ["Release new version"]
+    workflows: ["New release"]
     types:
       - completed
 
