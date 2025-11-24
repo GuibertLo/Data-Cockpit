@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+### [PR 35](https://github.com/heiafr-isc/Data-Cockpit/pull/35)
+patch: awd
+
+- tree: patch update short description
+
 ### [PR 33](https://github.com/heiafr-isc/Data-Cockpit/pull/33)
 patch: 1
 
