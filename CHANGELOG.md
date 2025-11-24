@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+### [PR 65](https://github.com/heiafr-isc/Data-Cockpit/pull/65)
+patch: Resulting in two merges
+
+- tree: patch description
+
 ## 3.1.0 (2025.11.24)
 
 ### [PR 63](https://github.com/heiafr-isc/Data-Cockpit/pull/63)
