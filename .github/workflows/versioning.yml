@@ -126,8 +126,7 @@ jobs:
       run: |
         MODULES=("tree" "database" "visualizer" "general_libraries" "experiments")
         echo "Modules to build: $MODULES"
-        IFS=',' read -r -a MODULE_ARRAY <<< "$MODULES"
-        for MODULE in "${MODULE_ARRAY[@]}"; do
+        for MODULE in "${MODULES[@]}"; do
           echo "Updating module: $MODULE"
           mvn -f $MODULE/pom.xml build-helper:parse-version versions:set -DnewVersion=${{ env.NEW_VERSION }} -DprocessAllModules=true -DgenerateBackupPoms=false
         done

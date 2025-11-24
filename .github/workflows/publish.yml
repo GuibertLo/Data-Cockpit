@@ -56,8 +56,7 @@ jobs:
       run: |
         MODULES=("tree" "database" "visualizer" "general_libraries" "experiments")
         echo "Modules to build: $MODULES"
-        IFS=',' read -r -a MODULE_ARRAY <<< "$MODULES"
-        for MODULE in "${MODULE_ARRAY[@]}"; do
+        for MODULE in "${MODULES[@]}"; do
           echo "Building and deploying module: $MODULE"
           mvn -B clean deploy -pl $MODULE -DskipTests -s config.xml -Dgpg.executable=gpg -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }}" -Dgpg.use-agent=false -Dgpg.loopback=true
         done
