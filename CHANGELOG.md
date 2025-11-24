@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## 2.2.0 (2025.11.24)
 
 ### [PR 52](https://github.com/heiafr-isc/Data-Cockpit/pull/52)
 minor: adw
