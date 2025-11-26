@@ -1,4 +1,4 @@
-name: Deploy
+name: Publish
 
 on:
   workflow_run:
@@ -7,8 +7,56 @@ on:
       - completed
 
 jobs:
-  deploy:
+  release:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+        with:
+          ref: 'main'
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Retrieve Changelog
+        id: retrieve_changelog
+        run: |
+          # Extract the newest version's release note
+          RELEASE_NOTE=$(cat CHANGELOG.md | sed -n '/^## /{n; :a; /^## /q; p; n; ba}')
+          # Store release note
+          echo "RELEASE_NOTE=${RELEASE_NOTE}" >> $GITHUB_ENV
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+
+      - name: Getting parent version
+        run: |
+          # Get version number
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)    
+          # Store version
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          target_commitish: 'main'
+          body: |
+            ${{ env.RELEASE_NOTE }}
+          tag_name: ${{ env.VERSION }}
+          name: Release ${{ env.VERSION }}
+          make_latest: true
+          draft: false
+          prerelease: false
+
+
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
