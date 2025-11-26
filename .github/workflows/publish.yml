@@ -1,14 +1,15 @@
 name: Publish
 
 on:
-  workflow_run:
-    workflows: ["New release"]
+  pull_request:
     types:
-      - completed
+      - closed
+    branches:
+      - main
 
 jobs:
   release:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: github.event.pull_request.merged == true && !startsWith(github.event.pull_request.head.ref, 'develop')
     runs-on: ubuntu-latest
 
     steps:
