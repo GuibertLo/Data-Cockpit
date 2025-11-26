@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## 4.0.1 (2025.11.26)
 
 ### [PR 71](https://github.com/heiafr-isc/Data-Cockpit/pull/71)
 patch: awd
