@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## 5.0.0 (2025.11.26)
+
+### [PR 79](https://github.com/heiafr-isc/Data-Cockpit/pull/79)
+patch: 1
+
+
+- general_libraries: patch description
 
 ### [PR 77](https://github.com/heiafr-isc/Data-Cockpit/pull/77)
 major: awd
