@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+### [PR 77](https://github.com/heiafr-isc/Data-Cockpit/pull/77)
+major: awd
+
+- general_libraries: patch description
+
 ### [PR 76](https://github.com/heiafr-isc/Data-Cockpit/pull/76)
 minor: aw
 
