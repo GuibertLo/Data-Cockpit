@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## 5.0.2 (2025.11.26)
+
+### [PR 83](https://github.com/heiafr-isc/Data-Cockpit/pull/83)
+patch: w
+
+- ad: awd
+
 ## 5.0.1 (2025.11.26)
 
 ### [PR 81](https://github.com/heiafr-isc/Data-Cockpit/pull/81)
