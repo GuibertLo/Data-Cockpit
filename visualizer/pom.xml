@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>visualizer</artifactId>
-    <version>5.0.2</version>
+    <version>5.0.3</version>
     <packaging>jar</packaging>
 
     <parent>
         <groupId>io.github.guibertlo.data-cockpit</groupId>
         <artifactId>data-cockpit-main</artifactId>
-        <version>5.0.2</version>
+        <version>5.0.3</version>
     </parent>
 
     <name>Data-Cockpit Visualizer</name>
